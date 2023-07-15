@@ -76,7 +76,7 @@ if button_ind:
     if OPENAI_API_KEY == 'YourAPIKeyIfNotSet':
         # If the openai key isn't set in the env, put a text box out there
         # while OPENAI_API_KEY == 'YourAPIKeyIfNotSet':
-        
+            st.session_state["data"] = {OPENAI_API_KEY: None}
             result=st.session_state["data"].get(OPENAI_API_KEY, None)
             st.write("result", result)
             while result is None:
