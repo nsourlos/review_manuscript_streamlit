@@ -23,7 +23,7 @@ import io
 
 # A function that will be called only if the environment's openai_api_key isn't set
 def get_openai_api_key():
-    input_text = st.text_input(label="OpenAI API Key (or set it as .env variable)",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="openai_api_key_input")
+    input_text = st.text_input(label="OpenAI API Key",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="openai_api_key_input")
     return input_text
 
 # Start Of Streamlit page
@@ -40,10 +40,12 @@ with col1:
                 \n\nThis tool is made  by [Nikos Sourlos](www.linkedin.com/in/nsourlos). \n\n View Source Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/review_manuscript_streamlit.py)")
 
 with col2:
-    st.image(image='paper_review.jpg', width=300, caption='https://www.nature.com/articles/d41586-018-06991-0')
+    # st.image(image='paper_review.jpg', width=300, caption='https://www.nature.com/articles/d41586-018-06991-0')
+    st.markdown("![Alt Text](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/paper_review.gif)")
+     #https://discuss.streamlit.io/t/how-to-show-local-gif-image/3408/3
 # End Top Information
 
-st.markdown("## :muscle: Upload PDF documents")
+st.markdown("## :muscle: Upload PDF document")
 	# :older_man:
 # Output type selection by the user
 # output_type = st.radio(
@@ -60,7 +62,7 @@ OPENAI_API_KEY = st.text_input(label="OpenAI API Key (or set it as .env variable
 # OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'YourAPIKeyIfNotSet')
 # st.write("OpenAI API Key:", OPENAI_API_KEY)
 
-download_option = st.selectbox("Download questions as docx?",('Yes', 'No'),index=1) #https://stackoverflow.com/questions/65026852/set-default-value-for-selectbox
+# download_option = st.selectbox("Download questions as docx?",('Yes', 'No'),index=1) #https://stackoverflow.com/questions/65026852/set-default-value-for-selectbox
 # twitter_handle = st.text_input(label="Twitter Username",  placeholder="@eladgil", key="twitter_user_input")
 # youtube_videos = st.text_input(label="YouTube URLs (Use , to seperate videos)",  placeholder="Ex: https://www.youtube.com/watch?v=c_hO_fjmMnk, https://www.youtube.com/watch?v=c_hO_fjmMnk", key="youtube_user_input")
 # webpages = st.text_input(label="Web Page URLs (Use , to seperate urls. Must include https://)",  placeholder="https://eladgil.com/", key="webpage_user_input")
@@ -166,7 +168,7 @@ if button_ind:
     st.write("Loading LLM output...")
 
     review_prompt='Below is a manuscript of a scientific publication. Act as a reviewer for the manuscript and provide at least 10 points for improvement. \
-        These points should provide clear instructions on how to improve the manuscript. The manuscript is: '
+        These points should provide be related to the content of the manuscript. The manuscript is: '
     llm=OpenAI(openai_api_key=OPENAI_API_KEY,temperature=0,model_name='gpt-3.5-turbo-16k') #Initialize LLM - 16k context length to fit the paper
     questions_final=llm.predict(review_prompt+paper) #Predict response using LLM 
     display(Markdown(questions_final))
@@ -185,12 +187,13 @@ if button_ind:
 #         file_name='review_questions.docx',
 #         # mime='text/csv',
 # )
-    
+
+    #https://discuss.streamlit.io/t/downloading-a-ms-word-document/28850/3
     bio = io.BytesIO()
     document.save(bio)
     if document:
         st.download_button(
-            label="Click here to download",
+            label="Click here to download as 'docx'",
             data=bio.getvalue(),
             file_name="review_questions.docx",
             mime="docx"
