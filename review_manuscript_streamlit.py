@@ -41,7 +41,11 @@ with col1:
 
 with col2:
     # st.image(image='paper_review.jpg', width=300, caption='https://www.nature.com/articles/d41586-018-06991-0')
-    st.markdown("![Alt Text](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/paper_review.gif)")
+    # st.markdown("![Alt Text](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/paper_review.gif)")
+      st.image(
+            "https://github.com/nsourlos/review_manuscript_streamlit/blob/main/paper_review.gif", # I prefer to load the GIFs using GIPHY
+            width=400, # The actual size of most gifs on GIPHY are really small, and using the column-width parameter would make it weirdly big. So I would suggest adjusting the width manually!
+        )
      #https://discuss.streamlit.io/t/how-to-show-local-gif-image/3408/3
 # End Top Information
 
