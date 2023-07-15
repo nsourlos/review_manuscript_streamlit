@@ -63,6 +63,7 @@ if button_ind:
         st.stop()
     
     if uploaded_file.name.endswith('.pdf')==0:
+        #More icons in https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app/
         st.warning('Only accepts PDF files. Please select another file', icon="🚨")
         st.stop()
 
@@ -76,16 +77,20 @@ if button_ind:
 
 
 
-
+    #Information on how to load uploaded file in https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
     st.write("Loading PDF...")
-    manuscript_path=uploaded_file#'paper.pdf'
+    manuscript_path=uploaded_file.read()#'paper.pdf'
     # print(manuscript_path)
     # print()
     st.write("Loaded PDF", manuscript_path)
     st.write("Loaded PDF name not used", uploaded_file.name)
     st.write("Loading PDF get value", uploaded_file.getvalue())
-    st.write("Loading PDF get value decode", uploaded_file.getvalue().decode("utf-8"))
     st.write("Loading PDF read", uploaded_file.read())
+
+    # st.write("Loading PDF get value decode", uploaded_file.getvalue().decode("utf-8")) 
+    #UnicodeDecodeError: 'utf-8' codec can't decode byte 0xbf in position 10: invalid start byte
+
+
     # Load PDF
     loaders = [
         PyPDFLoader(manuscript_path),
@@ -114,6 +119,6 @@ if button_ind:
     st.markdown(f"#### Output:")
     st.write(job_final)
 
-
-
-
+#Notes: Streamlit gives 1CPU, 1GB of RAM and 1GB of disk space (https://discuss.streamlit.io/t/problem-on-resources-limit/12605)
+#Streamlit implementation adapted from https://github.com/gkamradt/llm-interview-research-assistant/blob/main/main.py
+#Deployment based on https://docs.streamlit.io/streamlit-community-cloud/get-started/deploy-an-app
