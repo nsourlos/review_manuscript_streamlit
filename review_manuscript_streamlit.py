@@ -1,5 +1,5 @@
+#Import dependencies
 from IPython.display import display, Markdown
-# import openai
 import os
 import streamlit as st
 import pdfplumber
@@ -13,15 +13,6 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'YourAPIKeyIfNotSet')
 
 from langchain import OpenAI
 from langchain.text_splitter import TokenTextSplitter
-# import tiktoken
-
-# import warnings
-# warnings.filterwarnings("ignore")
-
-# A function that will be called only if the environment's openai_api_key isn't set
-# def get_openai_api_key():
-#     input_text = st.text_input(label="OpenAI API Key",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="openai_api_key_input")
-#     return input_text
 
 # Start Of Streamlit page
 st.set_page_config(page_title="Paper review assistant", page_icon=":robot:")
