@@ -3,3 +3,4 @@ langchain==0.0.195
 openai==0.27.8
 pypdf==3.12.1
 streamlit==1.23.1
+python-dotenv==1.0.0

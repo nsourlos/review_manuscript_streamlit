@@ -2,9 +2,13 @@ from langchain.document_loaders import PyPDFLoader #pip install pypdf==3.12.1
 from IPython.display import display, Markdown
 import openai
 import os
-from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv()) # read local .env file with OpenAI key
-openai.api_key = openai_api_key=os.environ['OPENAI_API_KEY']
+# from dotenv import load_dotenv, find_dotenv
+# _ = load_dotenv(find_dotenv()) # read local .env file with OpenAI key
+# openai.api_key = openai_api_key=os.environ['OPENAI_API_KEY']
+from dotenv import load_dotenv
+load_dotenv()
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'YourAPIKeyIfNotSet')
+
 from langchain import OpenAI
 from langchain.text_splitter import TokenTextSplitter
 import warnings
