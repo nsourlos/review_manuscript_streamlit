@@ -83,6 +83,7 @@ if button_ind:
     manuscript_path=uploaded_file#.getvalue()#'paper.pdf'
     # print(manuscript_path)
     # print()
+    st.write("Loaded PDF dir", os.getcwd()+manuscript_path.name)
     st.write("Loaded PDF", manuscript_path)
     st.write("Loaded PDF name not used", uploaded_file.name)
     # st.write("Loading PDF get value", uploaded_file.getvalue())
@@ -94,7 +95,7 @@ if button_ind:
 
     # Load PDF
     loaders = [
-        PyPDFLoader(manuscript_path),
+        PyPDFLoader(os.getcwd()+manuscript_path.name),
     ]
 
     docs = []
