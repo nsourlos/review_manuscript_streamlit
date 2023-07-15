@@ -30,8 +30,8 @@ def get_openai_api_key():
 st.set_page_config(page_title="Paper review assistant", page_icon=":robot:")
 
 # Start Top Information
-st.header("## :pencil2: LLM Assisted Paper review")
-
+st.header(":pencil2: LLM Assisted Paper review")
+#https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app/
 col1, col2 = st.columns(2)
 
 with col1:
