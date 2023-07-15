@@ -102,19 +102,36 @@ if button_ind:
         import traceback
         st.write(traceback.format_exc())
         import pdfplumber, io
-        pdf_file=pdfplumber.open(manuscript_path)
+
+        try:
+            buffer = io.BytesIO()
+            # write binary content of file to buffer
+            with open(manuscript_path, mode='rb') as file: 
+                buffer.write(file.read())
+
+            st.write("Loaded PDF buffer", buffer)
+        except:
+            st.write(traceback.format_exc())
+
+        pdf_file=pdfplumber.load(manuscript_path)#open(manuscript_path)
         st.write("Loaded PDF dir inside", pdf_file)
         st.write("Loaded PDF dir pages", pdf_file.pages)
         st.write("Loaded PDF dir 1 page", pdf_file.pages[0])
         st.write("Loaded PDF dir 1 page text", pdf_file.pages[0].extract_text())
 
-
-
     docs = []
-    for loader in loaders: #Add all documents to one
-        docs.extend(loader.load())
+    for page in pdf_file.pages: #Add all documents to one
+        docs.append(page.extract_text())
+    pdf_file.close()
     paper=[docs[i].page_content for i in range(len(docs))] #Get only document content
     paper=''.join(paper)
+    st.write("final PDF", paper)
+
+    # docs = []
+    # for loader in loaders: #Add all documents to one
+    #     docs.extend(loader.load())
+    # paper=[docs[i].page_content for i in range(len(docs))] #Get only document content
+    # paper=''.join(paper)
 
     #Calculate token usage and price for CV prompt - Same as sent to OpenAI but free
     st.write("Calculating price...")
