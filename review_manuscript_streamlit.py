@@ -17,6 +17,8 @@ warnings.filterwarnings("ignore")
 import time
 
 import streamlit as st
+import pdfplumber#, io
+
 
 # A function that will be called only if the environment's openai_api_key isn't set
 def get_openai_api_key():
@@ -55,7 +57,7 @@ uploaded_file = st.file_uploader("Choose a pdf file", type="pdf")
 # # Collect information about the person you want to research
 OPENAI_API_KEY = st.text_input(label="OpenAI API Key (or set it as .env variable)",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="YourAPIKeyIfNotSet")
 # OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'YourAPIKeyIfNotSet')
-st.write("OpenAI API Key:", OPENAI_API_KEY)
+# st.write("OpenAI API Key:", OPENAI_API_KEY)
 
 # person_name = st.text_input(label="Person's Name",  placeholder="Ex: Elad Gil", key="persons_name")
 # twitter_handle = st.text_input(label="Twitter Username",  placeholder="@eladgil", key="twitter_user_input")
@@ -103,9 +105,9 @@ if button_ind:
     manuscript_path=uploaded_file#.getvalue()#'paper.pdf'
     # print(manuscript_path)
     # print()
-    st.write("Loaded PDF dir", os.getcwd()+'/'+manuscript_path.name)
-    st.write("Loaded PDF", manuscript_path)
-    st.write("Loaded PDF name not used", uploaded_file.name)
+    # st.write("Loaded PDF dir", os.getcwd()+'/'+manuscript_path.name) # /app/review_manuscript_streamlit/paper.pdf
+    # st.write("Loaded PDF", manuscript_path) #UploadedFile(id=9, name='paper.pdf', type='application/pdf', size=3197009)
+    # st.write("Loaded PDF name not used", uploaded_file.name) #paper.pdf
     # st.write("Loading PDF get value", uploaded_file.getvalue())
     # st.write("Loading PDF read", uploaded_file.read()) #TypeError: A bytes-like object is required, not 'str'
 
@@ -114,14 +116,13 @@ if button_ind:
 
 
     # Load PDF
-    try:
-        loaders = [
-            PyPDFLoader(manuscript_path),
-        ]
-    except:
-        import traceback
-        st.write(traceback.format_exc())
-        import pdfplumber, io
+    # try:
+    #     loaders = [
+    #         PyPDFLoader(manuscript_path), #ypeError: stat: path should be string, bytes, os.PathLike or integer, not UploadedFile
+    #     ]
+    # except:
+    #     import traceback
+    #     st.write(traceback.format_exc())
 
         # try:
         #     buffer = io.BytesIO()
@@ -164,7 +165,7 @@ if button_ind:
 
     review_prompt='Below is a manuscript of a scientific publication. Act as a reviewer for the manuscript and provide at least 10 points for improvement. \
         These points should provide clear instructions on how to improve the manuscript. The manuscript is: '
-    llm=OpenAI(openai_api_key=openai_api_key,temperature=0,model_name='gpt-3.5-turbo-16k') #Initialize LLM - 16k context length to fit the paper
+    llm=OpenAI(openai_api_key=OPENAI_API_KEY,temperature=0,model_name='gpt-3.5-turbo-16k') #Initialize LLM - 16k context length to fit the paper
     job_final=llm.predict(review_prompt+paper) #Predict response using LLM 
     display(Markdown(job_final))
     st.markdown(f"#### Output:")
