@@ -36,8 +36,9 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("Have a manuscript to review? Takes a lot of time? This tool is meant to help you generate \
-                questions for the manuscript that can help improving it. There is a limit of 16k tokens (with response). Ensure that your pdf doesn't exceed 15k tokens. \
-                \n\nThis tool is made  by [Nikos Sourlos](https://linkedin.com/in/nsourlos). \n\n View Source Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/review_manuscript_streamlit.py)")
+                review questions for it. \n \
+                There is a limit of 16k tokens (with response). Takes only pdf files as input. \
+                \n\nThis tool is made  by [Nikos Sourlos](https://linkedin.com/in/nsourlos). Source Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/review_manuscript_streamlit.py)")
 
 with col2:
     # st.image(image='paper_review.jpg', width=300, caption='https://www.nature.com/articles/d41586-018-06991-0')
