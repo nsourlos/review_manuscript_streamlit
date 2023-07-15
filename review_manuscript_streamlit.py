@@ -83,7 +83,7 @@ if button_ind:
     manuscript_path=uploaded_file#.getvalue()#'paper.pdf'
     # print(manuscript_path)
     # print()
-    st.write("Loaded PDF dir", os.getcwd()+manuscript_path.name)
+    st.write("Loaded PDF dir", os.getcwd()+'/'+manuscript_path.name)
     st.write("Loaded PDF", manuscript_path)
     st.write("Loaded PDF name not used", uploaded_file.name)
     # st.write("Loading PDF get value", uploaded_file.getvalue())
@@ -94,9 +94,14 @@ if button_ind:
 
 
     # Load PDF
-    loaders = [
-        PyPDFLoader(os.getcwd()+manuscript_path.name),
-    ]
+    try:
+        loaders = [
+            PyPDFLoader(os.getcwd()+'/'+manuscript_path.name),
+        ]
+    except:
+        import pdfplumber, io
+        pdf_file=pdfplumber.open(manuscript_path)
+        st.write("Loaded PDF dir", pdf_file)
 
     docs = []
     for loader in loaders: #Add all documents to one
