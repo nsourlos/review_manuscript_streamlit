@@ -162,6 +162,7 @@ if button_ind:
     # print("Price for them:",round(len(ind_tokens)*0.003/1000,4),"$")
     st.write("Total tokens:",len(ind_tokens))
     st.write("Price for them:",round(len(ind_tokens)*0.003/1000,4),"$")
+    st.write("Loading LLM output...")
 
     review_prompt='Below is a manuscript of a scientific publication. Act as a reviewer for the manuscript and provide at least 10 points for improvement. \
         These points should provide clear instructions on how to improve the manuscript. The manuscript is: '
@@ -174,11 +175,12 @@ if button_ind:
     document = docx.Document() #Create word document
     document.add_heading('Review Questions', level=1) #Add title
     document.add_paragraph(questions_final) #Add text
-    final_file=document.save('review_questions.docx') #Save document
+    # final_file=document.save('review_questions.docx') #Save document
+    st.write('doc',document)
 
     st.download_button(
         label="Download questions as .docx",
-        data=final_file,
+        data=document,
         file_name='review_questions.docx',
         # mime='text/csv',
 )
