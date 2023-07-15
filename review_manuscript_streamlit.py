@@ -14,6 +14,7 @@ from langchain.text_splitter import TokenTextSplitter
 import tiktoken
 import warnings
 warnings.filterwarnings("ignore")
+import time
 
 import streamlit as st
 
@@ -74,7 +75,19 @@ if button_ind:
 
     if OPENAI_API_KEY == 'YourAPIKeyIfNotSet':
         # If the openai key isn't set in the env, put a text box out there
-        OPENAI_API_KEY = get_openai_api_key()
+        # while OPENAI_API_KEY == 'YourAPIKeyIfNotSet':
+        
+            result=st.session_state["data"].get(OPENAI_API_KEY, None)
+            st.write("result", result)
+            while result is None:
+                OPENAI_API_KEY = get_openai_api_key()
+                time.sleep(5)
+                result=st.session_state["data"].get(OPENAI_API_KEY, None)
+                if result is not None:
+                    st.write("key given", result)
+            # st.experimental_rerun()
+
+
 
 
 
