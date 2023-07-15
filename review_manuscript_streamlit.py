@@ -78,9 +78,11 @@ if button_ind:
 
 
     st.write("Loading PDF...")
-    manuscript_path=uploaded_file.name#'paper.pdf'
-    print(manuscript_path)
+    manuscript_path=uploaded_file#'paper.pdf'
+    # print(manuscript_path)
+    # print()
     st.write("Loaded PDF", manuscript_path)
+    st.write("Loaded PDF name not used", uploaded_file.name)
     # Load PDF
     loaders = [
         PyPDFLoader(manuscript_path),
@@ -96,8 +98,10 @@ if button_ind:
     st.write("Calculating price...")
     text_splitter = TokenTextSplitter(chunk_size=1, chunk_overlap=0,model_name='gpt-3.5-turbo-16k')
     ind_tokens=text_splitter.split_text(paper)
-    print("Total tokens:",len(ind_tokens))
-    print("Price for them:",round(len(ind_tokens)*0.003/1000,4),"$")
+    # print("Total tokens:",len(ind_tokens))
+    # print("Price for them:",round(len(ind_tokens)*0.003/1000,4),"$")
+    st.write("Total tokens:",len(ind_tokens))
+    st.write("Price for them:",round(len(ind_tokens)*0.003/1000,4),"$")
 
     review_prompt='Below is a manuscript of a scientific publication. Act as a reviewer for the manuscript and provide at least 10 points for improvement. \
         These points should provide clear instructions on how to improve the manuscript. The manuscript is: '
