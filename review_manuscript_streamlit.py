@@ -31,7 +31,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("Have a manuscript to review? Takes a lot of time? This tool is meant to help you generate \
-                questions for the manuscript that can help improving it.\
+                questions for the manuscript that can help improving it. There is a limit of 16k tokens (with response). Ensure that your pdf doesn't exceed 15k tokens. \
                 \n\nThis tool is made  by [Nikos Sourlos](www.linkedin.com/in/nsourlos). \n\n View Source Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/review_manuscript_streamlit.py)")
 
 with col2:
@@ -83,6 +83,9 @@ if button_ind:
     # print()
     st.write("Loaded PDF", manuscript_path)
     st.write("Loaded PDF name not used", uploaded_file.name)
+    st.write("Loading PDF get value", uploaded_file.getvalue())
+    st.write("Loading PDF get value decode", uploaded_file.getvalue().decode("utf-8"))
+    st.write("Loading PDF read", uploaded_file.read())
     # Load PDF
     loaders = [
         PyPDFLoader(manuscript_path),
