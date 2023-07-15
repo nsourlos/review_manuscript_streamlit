@@ -117,14 +117,15 @@ if button_ind:
         st.write("Loaded PDF dir inside", pdf_file)
         st.write("Loaded PDF dir pages", pdf_file.pages)
         st.write("Loaded PDF dir 1 page", pdf_file.pages[0])
-        st.write("Loaded PDF dir 1 page text", pdf_file.pages[0].extract_text())
+        st.write("Loaded PDF dir 1 page text", pdf_file.pages[0].extract_text(x_tolerance=1))
 
     docs = []
     for page in pdf_file.pages: #Add all documents to one
-        docs.append(page.extract_text())
+        docs.append(page.extract_text(x_tolerance=1)) #https://github.com/jsvine/pdfplumber/issues/334
     pdf_file.close()
-    paper=[docs[i].page_content for i in range(len(docs))] #Get only document content
-    paper=''.join(paper)
+    st.write("Loaded PDF docs", docs)
+    # paper=[docs[i].page_content for i in range(len(docs))] #Get only document content
+    paper=''.join(docs)
     st.write("final PDF", paper)
 
     # docs = []
