@@ -45,7 +45,7 @@ st.markdown("## :muscle: Upload PDF documents")
 #     "Output Type:",
 #     ('Interview Questions', '1-Page Summary'))
 
-uploaded_file = st.file_uploader("Choose a file")
+uploaded_file = st.file_uploader("Choose a pdf file", type="pdf")
 # if uploaded_file.name.endswith(".pdf")==0:
 #     st.write("Only accepts PDF files. Please select another file")
 # else:
@@ -78,14 +78,15 @@ if button_ind:
 
 
     #Information on how to load uploaded file in https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
+    #For pdfs https://discuss.streamlit.io/t/how-to-upload-a-pdf-file-in-streamlit/2428
     st.write("Loading PDF...")
-    manuscript_path=uploaded_file.getvalue()#'paper.pdf'
+    manuscript_path=uploaded_file#.getvalue()#'paper.pdf'
     # print(manuscript_path)
     # print()
     st.write("Loaded PDF", manuscript_path)
     st.write("Loaded PDF name not used", uploaded_file.name)
     # st.write("Loading PDF get value", uploaded_file.getvalue())
-    st.write("Loading PDF read", uploaded_file.read()) #TypeError: A bytes-like object is required, not 'str'
+    # st.write("Loading PDF read", uploaded_file.read()) #TypeError: A bytes-like object is required, not 'str'
 
     # st.write("Loading PDF get value decode", uploaded_file.getvalue().decode("utf-8")) 
     #UnicodeDecodeError: 'utf-8' codec can't decode byte 0xbf in position 10: invalid start byte
