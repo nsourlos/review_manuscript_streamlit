@@ -53,6 +53,8 @@ uploaded_file = st.file_uploader("Choose a pdf file", type="pdf")
 # else:
 
 # # Collect information about the person you want to research
+openai_input_key = st.text_input(label="OpenAI API Key (or set it as .env variable)",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="openai_api_key_input")
+
 # person_name = st.text_input(label="Person's Name",  placeholder="Ex: Elad Gil", key="persons_name")
 # twitter_handle = st.text_input(label="Twitter Username",  placeholder="@eladgil", key="twitter_user_input")
 # youtube_videos = st.text_input(label="YouTube URLs (Use , to seperate videos)",  placeholder="Ex: https://www.youtube.com/watch?v=c_hO_fjmMnk, https://www.youtube.com/watch?v=c_hO_fjmMnk", key="youtube_user_input")
@@ -74,17 +76,19 @@ if button_ind:
         st.stop()
 
     if OPENAI_API_KEY == 'YourAPIKeyIfNotSet':
+        st.warning('Please fill in OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
+        st.stop()
         # If the openai key isn't set in the env, put a text box out there
         # while OPENAI_API_KEY == 'YourAPIKeyIfNotSet':
-            st.session_state["data"] = {OPENAI_API_KEY: None}
-            result=st.session_state["data"].get(OPENAI_API_KEY, None)
-            st.write("result", result)
-            while result is None:
-                OPENAI_API_KEY = get_openai_api_key()
-                time.sleep(5)
-                result=st.session_state["data"].get(OPENAI_API_KEY, None)
-                if result is not None:
-                    st.write("key given", result)
+            # st.session_state["data"] = {OPENAI_API_KEY: None}
+            # result=st.session_state["data"].get(OPENAI_API_KEY, None)
+            # st.write("result", result)
+            # while result is None:
+                # OPENAI_API_KEY = get_openai_api_key()
+                # time.sleep(5)
+                # result=st.session_state["data"].get(OPENAI_API_KEY, None)
+                # if result is not None:
+                #     st.write("key given", result)
             # st.experimental_rerun()
 
 
