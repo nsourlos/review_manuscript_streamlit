@@ -171,11 +171,23 @@ if button_ind:
     st.markdown(f"#### Review Questions:")
     st.write(questions_final)
 
-    if download_option=='Yes':
-        document = docx.Document() #Create word document
-        document.add_heading('Review Questions', level=1) #Add title
-        document.add_paragraph(questions_final) #Add text
-        document.save('review_questions.docx') #Save document
+    document = docx.Document() #Create word document
+    document.add_heading('Review Questions', level=1) #Add title
+    document.add_paragraph(questions_final) #Add text
+    final_file=document.save('review_questions.docx') #Save document
+
+    st.download_button(
+        label="Download questions as .docx",
+        data=final_file,
+        file_name='review_questions.docx',
+        # mime='text/csv',
+)
+    # if download_option=='Yes':
+    #     document = docx.Document() #Create word document
+    #     document.add_heading('Review Questions', level=1) #Add title
+    #     document.add_paragraph(questions_final) #Add text
+    #     final_file=document.save('review_questions.docx') #Save document
+        
 
 #Notes: Streamlit gives 1CPU, 1GB of RAM and 1GB of disk space (https://discuss.streamlit.io/t/problem-on-resources-limit/12605)
 #Streamlit implementation adapted from https://github.com/gkamradt/llm-interview-research-assistant/blob/main/main.py
