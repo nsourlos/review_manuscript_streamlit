@@ -79,13 +79,13 @@ if button_ind:
 
     #Information on how to load uploaded file in https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
     st.write("Loading PDF...")
-    manuscript_path=uploaded_file.read()#'paper.pdf'
+    manuscript_path=uploaded_file.getvalue()#'paper.pdf'
     # print(manuscript_path)
     # print()
     st.write("Loaded PDF", manuscript_path)
     st.write("Loaded PDF name not used", uploaded_file.name)
-    st.write("Loading PDF get value", uploaded_file.getvalue())
-    st.write("Loading PDF read", uploaded_file.read())
+    # st.write("Loading PDF get value", uploaded_file.getvalue())
+    st.write("Loading PDF read", uploaded_file.read()) #TypeError: A bytes-like object is required, not 'str'
 
     # st.write("Loading PDF get value decode", uploaded_file.getvalue().decode("utf-8")) 
     #UnicodeDecodeError: 'utf-8' codec can't decode byte 0xbf in position 10: invalid start byte
