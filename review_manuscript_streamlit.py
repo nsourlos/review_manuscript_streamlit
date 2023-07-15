@@ -99,9 +99,16 @@ if button_ind:
             PyPDFLoader(os.getcwd()+'/'+manuscript_path.name),
         ]
     except:
+        import traceback
+        st.write(traceback.format_exc())
         import pdfplumber, io
         pdf_file=pdfplumber.open(manuscript_path)
-        st.write("Loaded PDF dir", pdf_file)
+        st.write("Loaded PDF dir inside", pdf_file)
+        st.write("Loaded PDF dir pages", pdf_file.pages)
+        st.write("Loaded PDF dir 1 page", pdf_file.pages[0])
+        st.write("Loaded PDF dir 1 page text", pdf_file.pages[0].extract_text())
+
+
 
     docs = []
     for loader in loaders: #Add all documents to one
