@@ -32,7 +32,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("Have a manuscript to review? Takes a lot of time? This tool is meant to help you generate \
                 questions for the manuscript that can help improving it.\
-                \n\nThis tool is made  by [@Nikos Sourlos](www.linkedin.com/in/nsourlos). \n\n View Source Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/main.py)")
+                \n\nThis tool is made  by [Nikos Sourlos](www.linkedin.com/in/nsourlos). \n\n View Source Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/review_manuscript_streamlit.py)")
 
 with col2:
     st.image(image='paper_review.jpg', width=300, caption='https://www.nature.com/articles/d41586-018-06991-0')
@@ -46,8 +46,8 @@ st.markdown("## :muscle: Upload PDF documents")
 #     ('Interview Questions', '1-Page Summary'))
 
 uploaded_file = st.file_uploader("Choose a file")
-if uploaded_file.endswith(".pdf")==0:
-    st.write("Only accepts PDF files. Please select another file")
+# if uploaded_file.name.endswith(".pdf")==0:
+#     st.write("Only accepts PDF files. Please select another file")
 # else:
 
 # # Collect information about the person you want to research
@@ -60,6 +60,10 @@ button_ind = st.button("*Generate Output*", type='secondary', help="Click to gen
 if button_ind:
     if uploaded_file is None:
         st.warning('Please provide a PDF file', icon="⚠️")
+        st.stop()
+    
+    if uploaded_file.name.endswith('.pdf')==0:
+        st.warning('Only accepts PDF files. Please select another file', icon="🚨")
         st.stop()
 
     if not OPENAI_API_KEY:
