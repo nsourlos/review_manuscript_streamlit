@@ -19,6 +19,7 @@ import time
 import streamlit as st
 import pdfplumber
 import docx
+import io
 
 # A function that will be called only if the environment's openai_api_key isn't set
 def get_openai_api_key():
@@ -176,14 +177,24 @@ if button_ind:
     document.add_heading('Review Questions', level=1) #Add title
     document.add_paragraph(questions_final) #Add text
     # final_file=document.save('review_questions.docx') #Save document
-    st.write('doc',document)
+    # st.write('doc',document) #aatributes pritned
 
-    st.download_button(
-        label="Download questions as .docx",
-        data=document,
-        file_name='review_questions.docx',
-        # mime='text/csv',
-)
+#     st.download_button(
+#         label="Download questions as .docx",
+#         data=document,
+#         file_name='review_questions.docx',
+#         # mime='text/csv',
+# )
+    
+    bio = io.BytesIO()
+    document.save(bio)
+    if document:
+        st.download_button(
+            label="Click here to download",
+            data=bio.getvalue(),
+            file_name="review_questions.docx",
+            mime="docx"
+        )
     # if download_option=='Yes':
     #     document = docx.Document() #Create word document
     #     document.add_heading('Review Questions', level=1) #Add title
