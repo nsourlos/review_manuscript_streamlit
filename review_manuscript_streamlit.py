@@ -79,6 +79,8 @@ if button_ind:
 
     st.write("Loading PDF...")
     manuscript_path=uploaded_file.name#'paper.pdf'
+    print(manuscript_path)
+    st.write("Loaded PDF", manuscript_path)
     # Load PDF
     loaders = [
         PyPDFLoader(manuscript_path),
