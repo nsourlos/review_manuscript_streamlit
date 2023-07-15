@@ -17,8 +17,8 @@ warnings.filterwarnings("ignore")
 import time
 
 import streamlit as st
-import pdfplumber#, io
-
+import pdfplumber
+import docx
 
 # A function that will be called only if the environment's openai_api_key isn't set
 def get_openai_api_key():
@@ -49,7 +49,7 @@ st.markdown("## :muscle: Upload PDF documents")
 #     "Output Type:",
 #     ('Interview Questions', '1-Page Summary'))
 
-uploaded_file = st.file_uploader("Choose a pdf file", type="pdf")
+uploaded_file = st.file_uploader("Choose a pdf file", type="pdf") #https://discuss.streamlit.io/t/how-to-upload-a-pdf-file-in-streamlit/2428/2
 # if uploaded_file.name.endswith(".pdf")==0:
 #     st.write("Only accepts PDF files. Please select another file")
 # else:
@@ -59,7 +59,7 @@ OPENAI_API_KEY = st.text_input(label="OpenAI API Key (or set it as .env variable
 # OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'YourAPIKeyIfNotSet')
 # st.write("OpenAI API Key:", OPENAI_API_KEY)
 
-# person_name = st.text_input(label="Person's Name",  placeholder="Ex: Elad Gil", key="persons_name")
+download_option = st.selectbox("Download questions as docx?",('Yes', 'No'),index=1)
 # twitter_handle = st.text_input(label="Twitter Username",  placeholder="@eladgil", key="twitter_user_input")
 # youtube_videos = st.text_input(label="YouTube URLs (Use , to seperate videos)",  placeholder="Ex: https://www.youtube.com/watch?v=c_hO_fjmMnk, https://www.youtube.com/watch?v=c_hO_fjmMnk", key="youtube_user_input")
 # webpages = st.text_input(label="Web Page URLs (Use , to seperate urls. Must include https://)",  placeholder="https://eladgil.com/", key="webpage_user_input")
@@ -70,10 +70,10 @@ if button_ind:
         st.warning('Please provide a PDF file', icon="⚠️")
         st.stop()
     
-    if uploaded_file.name.endswith('.pdf')==0:
-        #More icons in https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app/
-        st.warning('Only accepts PDF files. Please select another file', icon="🚨")
-        st.stop()
+    # if uploaded_file.name.endswith('.pdf')==0:
+    #     #More icons in https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app/
+    #     st.warning('Only accepts PDF files. Please select another file', icon="🚨")
+    #     st.stop()
 
     if not OPENAI_API_KEY:
         st.warning('Please insert OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
@@ -139,7 +139,7 @@ if button_ind:
         # st.write("Loaded PDF dir pages", pdf_file.pages) #with len get num of pages
         # st.write("Loaded PDF dir 1 page text", pdf_file.pages[0].extract_text(x_tolerance=1))
 
-    docs = []
+    docs = [] #https://github.com/jsvine/pdfplumber/issues/147
     for page in pdf_file.pages: #Add all documents to one
         docs.append(page.extract_text(x_tolerance=1)) #https://github.com/jsvine/pdfplumber/issues/334
     pdf_file.close()
@@ -166,10 +166,16 @@ if button_ind:
     review_prompt='Below is a manuscript of a scientific publication. Act as a reviewer for the manuscript and provide at least 10 points for improvement. \
         These points should provide clear instructions on how to improve the manuscript. The manuscript is: '
     llm=OpenAI(openai_api_key=OPENAI_API_KEY,temperature=0,model_name='gpt-3.5-turbo-16k') #Initialize LLM - 16k context length to fit the paper
-    job_final=llm.predict(review_prompt+paper) #Predict response using LLM 
-    display(Markdown(job_final))
-    st.markdown(f"#### Output:")
-    st.write(job_final)
+    questions_final=llm.predict(review_prompt+paper) #Predict response using LLM 
+    display(Markdown(questions_final))
+    st.markdown(f"#### Review Questions:")
+    st.write(questions_final)
+
+    if download_option=='Yes':
+        document = docx.Document() #Create word document
+        document.add_heading('Review Questions', level=1) #Add title
+        document.add_paragraph(questions_final) #Add text
+        document.save('review_questions.docx') #Save document
 
 #Notes: Streamlit gives 1CPU, 1GB of RAM and 1GB of disk space (https://discuss.streamlit.io/t/problem-on-resources-limit/12605)
 #Streamlit implementation adapted from https://github.com/gkamradt/llm-interview-research-assistant/blob/main/main.py
