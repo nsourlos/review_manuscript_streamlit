@@ -103,17 +103,17 @@ if button_ind:
         st.write(traceback.format_exc())
         import pdfplumber, io
 
-        try:
-            buffer = io.BytesIO()
-            # write binary content of file to buffer
-            with open(manuscript_path, mode='rb') as file: 
-                buffer.write(file.read())
+        # try:
+        #     buffer = io.BytesIO()
+        #     # write binary content of file to buffer
+        #     with open(manuscript_path, mode='rb') as file: 
+        #         buffer.write(file.read())
 
-            st.write("Loaded PDF buffer", buffer)
-        except:
-            st.write(traceback.format_exc())
+        #     st.write("Loaded PDF buffer", buffer)
+        # except:
+        #     st.write(traceback.format_exc())
 
-        pdf_file=pdfplumber.load(manuscript_path)#open(manuscript_path)
+        pdf_file=pdfplumber.open(manuscript_path)#no attribute load
         st.write("Loaded PDF dir inside", pdf_file)
         st.write("Loaded PDF dir pages", pdf_file.pages)
         st.write("Loaded PDF dir 1 page", pdf_file.pages[0])
