@@ -37,7 +37,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("Have a manuscript to review? Takes a lot of time? This tool is meant to help you generate \
                 questions for the manuscript that can help improving it. There is a limit of 16k tokens (with response). Ensure that your pdf doesn't exceed 15k tokens. \
-                \n\nThis tool is made  by [Nikos Sourlos](www.linkedin.com/in/nsourlos). \n\n View Source Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/review_manuscript_streamlit.py)")
+                \n\nThis tool is made  by [Nikos Sourlos](https://linkedin.com/in/nsourlos). \n\n View Source Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/review_manuscript_streamlit.py)")
 
 with col2:
     # st.image(image='paper_review.jpg', width=300, caption='https://www.nature.com/articles/d41586-018-06991-0')
@@ -46,7 +46,7 @@ with col2:
       st.image(
             "https://raw.githubusercontent.com/nsourlos/review_manuscript_streamlit/main/paper_review.gif", # I prefer to load the GIFs using GIPHY
             width=300, # The actual size of most gifs on GIPHY are really small, and using the column-width parameter would make it weirdly big. So I would suggest adjusting the width manually!
-        )
+        ) #https://discuss.streamlit.io/t/how-to-centre-and-resize-gifs-in-streamlit/18333/4
     # import base64
 # hr-til/master/app/assets/images/banner.png)
 
