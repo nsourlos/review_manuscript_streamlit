@@ -53,9 +53,9 @@ uploaded_file = st.file_uploader("Choose a pdf file", type="pdf")
 # else:
 
 # # Collect information about the person you want to research
-OPENAI_API_KEY = st.text_input(label="OpenAI API Key (or set it as .env variable)",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="openai_api_key_input")
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'YourAPIKeyIfNotSet')
-
+OPENAI_API_KEY = st.text_input(label="OpenAI API Key (or set it as .env variable)",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="YourAPIKeyIfNotSet")
+# OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'YourAPIKeyIfNotSet')
+st.write("OpenAI API Key:", OPENAI_API_KEY)
 
 # person_name = st.text_input(label="Person's Name",  placeholder="Ex: Elad Gil", key="persons_name")
 # twitter_handle = st.text_input(label="Twitter Username",  placeholder="@eladgil", key="twitter_user_input")
