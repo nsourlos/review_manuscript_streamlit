@@ -56,7 +56,7 @@ if prompt_text == 'Generate Review Questions':
                 tailored to the content of the specific manuscript. Avoid general remarks and give specific recommendations on what should change.
                 Explain why what is already written is not sufficient and expand each point raised by providing ways to improve.
                 The scientific manuscript is: """
-    prompt=prompt.replace('          ','').replace('\n',' ')
+    prompt=prompt.replace('                ','').replace('\n',' ')
 
 elif prompt_text == 'Q&A':
 
@@ -72,7 +72,7 @@ elif prompt_text == 'Q&A':
 
 
 button_ind = st.button("*Generate Output*", type='secondary', help="Click to generate answer")
-st.write(':heavy_exclamation_mark: Please refresh page everytime you click that button')
+# st.write(':heavy_exclamation_mark: Please refresh page everytime you click that button')
 
 #Select options from dropdown box
 # download_option = st.selectbox("Download questions as docx?",('Yes', 'No'),index=1) #https://stackoverflow.com/questions/65026852/set-default-value-for-selectbox
