@@ -105,10 +105,6 @@ if button_ind: #When button is clicked
         review_prompt=prompt_text+' The scientific manuscript is: '
     else: #If not use the default
         review_prompt=placeholder_text.replace('Default: ','')
-        # review_prompt='You are a experienced reviewer of scientific manuscripts. You provide concise feedback on the manuscript as well as specific suggestions \
-        # for things that should be modified based on the content of it. Provide at least 10 suggestions tailored to the content of the specific manuscript. \
-        # Avoid general remarks and give specific recommendations on what should change. Explain why what is already written is not sufficient and expand each \
-        # point raised by providing ways to improve. The scientific manuscript is: '
 
     llm=OpenAI(openai_api_key=OPENAI_API_KEY,temperature=0,model_name='gpt-3.5-turbo-16k') #Initialize LLM - 16k context length to fit the whole paper
     st.write('Prompt given to LLM:',review_prompt)
