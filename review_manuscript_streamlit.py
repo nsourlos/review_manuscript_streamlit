@@ -23,7 +23,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("Have a manuscript to review? Want to Q&A with it? This tool is meant to help you with all these things! \
-                \n\nThere is a limit of 16k tokens (with response). \
+                \n\nThere is a limit of 16k tokens (with response). Try to be as precise in the prompt as possible. \
                 Takes only pdf files as input. Click 'Generate Output' after uploading file. \
                 If you want to only know the price, just upload the document (no key needed) and click the above button. \
                 \n\nThis tool is made  by [Nikos Sourlos](https://linkedin.com/in/nsourlos). \
@@ -102,7 +102,7 @@ if button_ind: #When button is clicked
         st.stop()
 
     if len(prompt_text)>0: #If prompt is given
-        review_prompt=prompt_text+'The scientific manuscript is: '
+        review_prompt=prompt_text+' The scientific manuscript is: '
     else: #If not use the default
         review_prompt=placeholder_text.replace('Default: ','')
         # review_prompt='You are a experienced reviewer of scientific manuscripts. You provide concise feedback on the manuscript as well as specific suggestions \
