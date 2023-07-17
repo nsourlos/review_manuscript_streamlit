@@ -22,8 +22,8 @@ st.header(":pencil2: LLM Assisted Paper Review")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("Have a manuscript to review? Want to Q&A with it? This tool is meant to help you with all these things! \
-                \n\nThere is a limit of 16k tokens (with response). Try to be as precise in the prompt as possible. \
+    st.markdown("Have a manuscript to review? Want to Q&A with it? This tool is meant to help you with these things! \
+                \n\nThere is a limit of 16k tokens (with response). \
                 Takes only pdf files as input. Click 'Generate Output' after uploading file. \
                 If you want to only know the price, just upload the document (no key needed) and click the above button. \
                 \n\nThis tool is made  by [Nikos Sourlos](https://linkedin.com/in/nsourlos). \
@@ -43,29 +43,36 @@ uploaded_file = st.file_uploader("Choose a pdf file", type="pdf") #Upload file b
 #Show a box to be filled with the OpenAI API Key by the user
 OPENAI_API_KEY = st.text_input(label="OpenAI API Key (or set it as .env variable)",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="YourAPIKeyIfNotSet")
 
-#Insert placeholder text for prompt and format it properly
-placeholder_text = """Default: You are a experienced reviewer of scientific manuscripts. You provide concise feedback on the
-                    manuscript as well as specific suggestions for things that should be modified based on the content of it. Provide at least 10 suggestions
-                    tailored to the content of the specific manuscript. Avoid general remarks and give specific recommendations on what should change.
-                    Explain why what is already written is not sufficient and expand each point raised by providing ways to improve.
-                    The scientific manuscript is: """
-placeholder_text=placeholder_text.replace('          ','').replace('\n',' ')
+#Click one of options
+prompt_text = st.radio(
+    "Task:",
+    ('Generate Review Questions', 'Q&A'))
 
-#Show a box to be filled in with prompt to be sent to OpenAI
-prompt_text = st.text_area('Enter Prompt Below:', 
-                           height=300, 
-                           placeholder=placeholder_text) 
+if prompt_text == 'Generate Review Questions':
+
+    #Insert placeholder text for prompt and format it properly
+    prompt = """You are a experienced reviewer of scientific manuscripts. You provide concise feedback on the
+                manuscript as well as specific suggestions for things that should be modified based on the content of it. Provide at least 10 suggestions
+                tailored to the content of the specific manuscript. Avoid general remarks and give specific recommendations on what should change.
+                Explain why what is already written is not sufficient and expand each point raised by providing ways to improve.
+                The scientific manuscript is: """
+    prompt=prompt.replace('          ','').replace('\n',' ')
+
+elif prompt_text == 'Q&A':
+
+    prompt=""" You are a helpful chatbot that helps the user answer a question with information obtained from a scientific manuscript. The question is: """
+
+    #Insert placeholder text for prompt and format it properly
+    placeholder_text = """How to mitigate biases in AI algorithms?"""
+    
+    #Show a box to be filled in with prompt to be sent to OpenAI
+    question = st.text_area('Enter Question Below:', 
+                            height=300, 
+                            placeholder=placeholder_text) 
+
 
 button_ind = st.button("*Generate Output*", type='secondary', help="Click to generate answer")
 st.write(':heavy_exclamation_mark: Please refresh page everytime you click that button')
-
-
-# Other Button configurations are shown below:
-
-#Click one of options
-# output_type = st.radio(
-#     "Output Type:",
-#     ('Generate Questions', '1-Page Summary'))
 
 #Select options from dropdown box
 # download_option = st.selectbox("Download questions as docx?",('Yes', 'No'),index=1) #https://stackoverflow.com/questions/65026852/set-default-value-for-selectbox
@@ -101,10 +108,10 @@ if button_ind: #When button is clicked
         st.warning('Please insert OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
         st.stop()
 
-    if len(prompt_text)>0: #If prompt is given
-        review_prompt=prompt_text+' The scientific manuscript is: '
-    else: #If not use the default
-        review_prompt=placeholder_text.replace('Default: ','')
+    if prompt_text=='Generate Review Questions': 
+        review_prompt=prompt
+    elif prompt_text=='Q&A': 
+        review_prompt=prompt+question+' The scientific manuscript is: '
 
     llm=OpenAI(openai_api_key=OPENAI_API_KEY,temperature=0,model_name='gpt-3.5-turbo-16k') #Initialize LLM - 16k context length to fit the whole paper
     st.write('Prompt given to LLM:',review_prompt)
