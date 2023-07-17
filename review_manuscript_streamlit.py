@@ -102,7 +102,7 @@ if button_ind: #When button is clicked
         st.stop()
 
     if len(prompt_text)>0: #If prompt is given
-        review_prompt=prompt_text
+        review_prompt=prompt_text+'The scientific manuscript is: '
     else: #If not use the default
         review_prompt=placeholder_text.replace('Default: ','')
         # review_prompt='You are a experienced reviewer of scientific manuscripts. You provide concise feedback on the manuscript as well as specific suggestions \
@@ -111,6 +111,7 @@ if button_ind: #When button is clicked
         # point raised by providing ways to improve. The scientific manuscript is: '
 
     llm=OpenAI(openai_api_key=OPENAI_API_KEY,temperature=0,model_name='gpt-3.5-turbo-16k') #Initialize LLM - 16k context length to fit the whole paper
+    st.write('Prompt given to LLM:',review_prompt)
     questions_final=llm.predict(review_prompt+paper) #Predict response using LLM 
     st.markdown(f"#### LLM Output:")
     st.write(questions_final)
