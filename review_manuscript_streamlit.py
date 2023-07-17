@@ -22,8 +22,10 @@ st.header(":pencil2: LLM Assisted Paper Review")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("Have a manuscript to review? Takes a lot of time? This tool is meant to help you generate review questions for it. \
-                \n\nThere is a limit of 16k tokens (with response). Takes only pdf files as input. \
+    st.markdown("Have a manuscript to review? Want to Q&A with it? This tool is meant to help you with all these things! \
+                \n\nThere is a limit of 16k tokens (with response). \
+                Takes only pdf files as input. Click 'Generate Output' after uploading file. \
+                If you want to only know the price, just upload the document (no key needed) and click the above button. \
                 \n\nThis tool is made  by [Nikos Sourlos](https://linkedin.com/in/nsourlos). \
                 \n\nSource Code on [Github](https://github.com/nsourlos/review_manuscript_streamlit/blob/main/review_manuscript_streamlit.py)")
 
@@ -41,6 +43,19 @@ uploaded_file = st.file_uploader("Choose a pdf file", type="pdf") #Upload file b
 #Show a box to be filled with the OpenAI API Key by the user
 OPENAI_API_KEY = st.text_input(label="OpenAI API Key (or set it as .env variable)",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="YourAPIKeyIfNotSet")
 
+#Insert placeholder text for prompt and format it properly
+placeholder_text = """Default: You are a experienced reviewer of scientific manuscripts. You provide concise feedback on the
+                    manuscript as well as specific suggestions for things that should be modified based on the content of it. Provide at least 10 suggestions
+                    tailored to the content of the specific manuscript. Avoid general remarks and give specific recommendations on what should change.
+                    Explain why what is already written is not sufficient and expand each point raised by providing ways to improve.
+                    The scientific manuscript is: """
+placeholder_text=placeholder_text.replace('          ','').replace('\n',' ')
+
+#Show a box to be filled in with prompt to be sent to OpenAI
+prompt_text = st.text_area('Enter Prompt Below:', 
+                           height=300, 
+                           placeholder=placeholder_text) 
+
 button_ind = st.button("*Generate Output*", type='secondary', help="Click to generate review questions")
 
 # Other Button configurations are shown below:
@@ -57,10 +72,6 @@ if button_ind: #When button is clicked
     
     if uploaded_file is None: #If no file is uploaded raise an error and stop execution
         st.warning('Please provide a PDF file', icon="⚠️")
-        st.stop()
-
-    if not OPENAI_API_KEY: #If no OpenAI API key is set raise an error and stop execution
-        st.warning('Please insert OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
         st.stop()
 
     #Information on how to load uploaded file in https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
@@ -84,19 +95,30 @@ if button_ind: #When button is clicked
     st.write("Price for them:",round(len(ind_tokens)*0.003/1000,4),"$")
     st.write("Loading LLM output...")
 
-    review_prompt='You are a experienced reviewer of scientific manuscripts. You provide concise feedback on the manuscript as well as specific suggestions \
-        for things that should be modified based on the content of it. Provide at least 10 suggestions tailored to the content of the specific manuscript. \
-        Avoid general remarks and give specific recommendations on what should change. Explain why what is already written is not sufficient and expand each \
-        point raised by providing ways to improve. The scientific manuscript is: '
+    if not OPENAI_API_KEY: #If no OpenAI API key is set raise an error and stop execution
+        st.warning('Please insert OpenAI API Key. Instructions [here](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key)', icon="⚠️")
+        st.stop()
+
+    if len(prompt_text)>0: #If prompt is given
+        review_prompt=prompt_text
+    else: #If not use the default
+        review_prompt=placeholder_text.replace('Default: ','')
+        # review_prompt='You are a experienced reviewer of scientific manuscripts. You provide concise feedback on the manuscript as well as specific suggestions \
+        # for things that should be modified based on the content of it. Provide at least 10 suggestions tailored to the content of the specific manuscript. \
+        # Avoid general remarks and give specific recommendations on what should change. Explain why what is already written is not sufficient and expand each \
+        # point raised by providing ways to improve. The scientific manuscript is: '
 
     llm=OpenAI(openai_api_key=OPENAI_API_KEY,temperature=0,model_name='gpt-3.5-turbo-16k') #Initialize LLM - 16k context length to fit the whole paper
     questions_final=llm.predict(review_prompt+paper) #Predict response using LLM 
-    st.markdown(f"#### Review Points:")
+    st.markdown(f"#### LLM Output:")
     st.write(questions_final)
 
     #Create a docx to be saved if user clicks button below
     document = docx.Document() #Create word document
-    document.add_heading('Review Points', level=1) #Add title
+    document.add_heading('https://review-paper.streamlit.app/', level=1) #Add title
+    document.add_heading("Prompt Used:",level=3) #Add text
+    document.add_paragraph(review_prompt) #Add text
+    document.add_heading("LLM Output:",level=3) #Add text
     document.add_paragraph(questions_final) #Add text
     
     #https://discuss.streamlit.io/t/downloading-a-ms-word-document/28850/3
@@ -106,7 +128,7 @@ if button_ind: #When button is clicked
         st.download_button( #Create download button
             label="Download as 'docx'",
             data=bio.getvalue(),
-            file_name="review_questions.docx",
+            file_name="LLM_output.docx",
             mime="docx"
         )
 
