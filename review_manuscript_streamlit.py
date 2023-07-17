@@ -56,7 +56,9 @@ prompt_text = st.text_area('Enter Prompt Below:',
                            height=300, 
                            placeholder=placeholder_text) 
 
-button_ind = st.button("*Generate Output*", type='secondary', help="Click to generate review questions")
+button_ind = st.button("*Generate Output*", type='secondary', help="Click to generate answer")
+st.write(':heavy_exclamation_mark: Please refresh page everytime you click that button')
+
 
 # Other Button configurations are shown below:
 
